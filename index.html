@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OBS Side‑Scrolling Ticker</title>
+  <style>
+    :root {
+      --bg: rgba(0,0,0,0.6);
+      --fg: #ffffff;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --size: 48;           /* px */
+      --speed: 160;         /* px per second */
+      --paddingY: 6;        /* px */
+      --paddingX: 16;       /* px */
+      --gapX: 16;           /* px between logo and text */
+      --collapseMs: 0;      /* 0 = never collapse */
+      --logoUrl: "logo.png";/* default path; override via ?logo= */
+      --messagesUrl: "messages.txt"; /* newline‑separated file by default */
+      --shadow: 0 1px 2px rgba(0,0,0,0.35);
+    }
+
+    html, body {
+      margin: 0; height: 100%; background: transparent; overflow: hidden;
+    }
+
+    /* Root sizing is driven by font-size to make height auto‑scale. */
+    #tickerRoot {
+      position: relative;
+      width: 100vw;
+      font-family: var(--font);
+      font-size: calc(var(--size) * 1px);
+      line-height: 1.25;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: calc(var(--paddingY) * 1px) calc(var(--paddingX) * 1px);
+      backdrop-filter: blur(2px);
+      background: var(--bg);
+      text-shadow: var(--shadow);
+    }
+
+    #track {
+      position: relative;
+      flex: 1 1 auto;
+      height: 1.25em; /* ensures consistent vertical centering */
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      white-space: nowrap;
+      will-change: transform;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--gapX) * 1px);
+    }
+
+    .logo {
+      height: 1em; /* match text height */
+      width: auto; aspect-ratio: auto;
+      display: inline-block;
+      vertical-align: middle;
+      image-rendering: auto;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.35));
+    }
+
+    .msg {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Optional top/bottom hairlines for a newsy vibe; toggle via ?rules=1 */
+    #tickerRoot.rules::before,
+    #tickerRoot.rules::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 2px; opacity: 0.5;
+      background: linear-gradient(90deg, transparent, var(--fg), transparent);
+    }
+    #tickerRoot.rules::before { top: 0; }
+    #tickerRoot.rules::after  { bottom: 0; }
+  </style>
+</head>
+<body>
+  <div id="tickerRoot" aria-live="polite" aria-atomic="true">
+    <div id="track"></div>
+  </div>
+
+  <script>
+    (function() {
+      const qp = new URLSearchParams(location.search);
+      const root = document.getElementById('tickerRoot');
+      const track = document.getElementById('track');
+
+      // --- Config via query params ---
+      const cfg = {
+        bg: qp.get('bg') ?? getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
+        fg: qp.get('fg') ?? getComputedStyle(document.documentElement).getPropertyValue('--fg').trim(),
+        font: qp.get('font') ?? getComputedStyle(document.documentElement).getPropertyValue('--font').trim(),
+        size: clampNum(qp.get('size'), 12, 200, +getCssVar('--size')),
+        speed: clampNum(qp.get('speed'), 20, 2000, +getCssVar('--speed')),
+        paddingY: clampNum(qp.get('py'), 0, 100, +getCssVar('--paddingY')),
+        paddingX: clampNum(qp.get('px'), 0, 200, +getCssVar('--paddingX')),
+        gapX: clampNum(qp.get('gap'), 0, 200, +getCssVar('--gapX')),
+        collapseMs: clampNum(qp.get('collapse'), 0, 3600000, +getCssVar('--collapseMs')),
+        logoUrl: qp.get('logo') || getCssVar('--logoUrl').replace(/\"/g, '').trim(),
+        messagesUrl: qp.get('src') || getCssVar('--messagesUrl').replace(/\"/g, '').trim(),
+        fontUrl: qp.get('fontUrl') || '',
+        rules: qp.get('rules') === '1',
+        // Optional: direction=rtl for right‑to‑left entry
+        direction: (qp.get('direction') === 'rtl') ? 'rtl' : 'ltr',
+      };
+
+      // Apply base styles
+      setCssVar('--bg', cfg.bg);
+      setCssVar('--fg', cfg.fg);
+      setCssVar('--font', cfg.font);
+      setCssVar('--size', cfg.size);
+      setCssVar('--speed', cfg.speed);
+      setCssVar('--paddingY', cfg.paddingY);
+      setCssVar('--paddingX', cfg.paddingX);
+      setCssVar('--gapX', cfg.gapX);
+
+      if (cfg.rules) root.classList.add('rules');
+
+      if (cfg.fontUrl) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = cfg.fontUrl;
+        document.head.appendChild(link);
+      }
+
+      // Fetch messages (supports .txt (newline separated) or .json (array of strings))
+      let messages = [];
+      fetch(cfg.messagesUrl, { cache: 'no-store' })
+        .then(r => {
+          const url = cfg.messagesUrl.toLowerCase();
+          const isJson = url.endsWith('.json');
+          return r.text().then(txt => ({txt, isJson}));
+        })
+        .then(({txt, isJson}) => {
+          try {
+            if (isJson) {
+              const arr = JSON.parse(txt);
+              messages = (Array.isArray(arr) ? arr : []).map(s => String(s)).filter(Boolean);
+            } else {
+              messages = txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+            }
+          } catch (e) {
+            console.error('Failed to parse messages:', e);
+          }
+          if (!messages.length) messages = ["Welcome to the stream!", "Don't forget to subscribe!", "Check out gabisness.com"]; // fallback
+          startLoop();
+        })
+        .catch(err => {
+          console.error('Failed to load messages:', err);
+          messages = ["(ticker) Unable to load messages file."];
+          startLoop();
+        });
+
+      let index = 0;
+      let raf = null;
+      let animating = false;
+
+      function startLoop() {
+        nextSlide();
+      }
+
+      function nextSlide() {
+        if (animating) return;
+        const msg = messages[index % messages.length];
+        index++;
+        runOnce(msg).then(() => {
+          if (cfg.collapseMs > 0) {
+            root.style.display = 'none';
+            setTimeout(() => {
+              root.style.display = '';
+              nextSlide();
+            }, cfg.collapseMs);
+          } else {
+            nextSlide();
+          }
+        });
+      }
+
+      function runOnce(text) {
+        return new Promise(resolve => {
+          // Reset track
+          track.innerHTML = '';
+
+          const slide = document.createElement('div');
+          slide.className = 'slide';
+
+          const imgL = document.createElement('img');
+          imgL.className = 'logo';
+          imgL.alt = '';
+          imgL.decoding = 'async';
+          imgL.src = cfg.logoUrl;
+
+          const span = document.createElement('span');
+          span.className = 'msg';
+          span.textContent = text;
+
+          const imgR = document.createElement('img');
+          imgR.className = 'logo';
+          imgR.alt = '';
+          imgR.decoding = 'async';
+          imgR.src = cfg.logoUrl;
+
+          // Order respects direction visually, but we always move left for simplicity
+          if (cfg.direction === 'rtl') {
+            slide.appendChild(imgR.cloneNode());
+            slide.appendChild(span);
+            slide.appendChild(imgL.cloneNode());
+          } else {
+            slide.appendChild(imgL);
+            slide.appendChild(span);
+            slide.appendChild(imgR);
+          }
+
+          track.appendChild(slide);
+
+          // Force a frame to measure
+          requestAnimationFrame(() => {
+            const trackRect = track.getBoundingClientRect();
+            const slideRect = slide.getBoundingClientRect();
+            const contentWidth = slideRect.width;
+            const startX = trackRect.width;         // start just off the right edge
+            const endX = -contentWidth;             // finish when fully off left
+            const totalDistance = startX - endX;
+            const pxPerSec = cfg.speed;
+            const durationMs = (totalDistance / pxPerSec) * 1000;
+
+            let start = null;
+            animating = true;
+
+            function step(ts) {
+              if (!start) start = ts;
+              const elapsed = ts - start;
+              const progress = Math.min(elapsed / durationMs, 1);
+              const x = lerp(startX, endX, progress);
+              slide.style.transform = `translate(${x}px, -50%)`;
+              if (progress < 1) {
+                raf = requestAnimationFrame(step);
+              } else {
+                animating = false;
+                resolve();
+              }
+            }
+
+            // Initialize position and kick off
+            slide.style.transform = `translate(${startX}px, -50%)`;
+            raf = requestAnimationFrame(step);
+          });
+        });
+      }
+
+      // Utilities
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function clampNum(v, min, max, fallback) {
+        const n = Number(v);
+        if (!isFinite(n)) return fallback;
+        return Math.max(min, Math.min(max, n));
+      }
+      function getCssVar(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name);
+      }
+      function setCssVar(name, value) {
+        document.documentElement.style.setProperty(name, value);
+      }
+
+      // Resize handling (safe in OBS browser source too)
+      addEventListener('resize', () => {
+        // No special handling needed; next slide uses fresh measurements
+      });
+
+      // Hot reload messages every N slides (optional): ?reloadEvery=10
+      const reloadEvery = clampNum(qp.get('reloadEvery'), 0, 1000, 0);
+      if (reloadEvery > 0) {
+        let shown = 0;
+        const origNext = nextSlide;
+        nextSlide = function patchedNext() {
+          shown++;
+          if (shown % reloadEvery === 0) {
+            fetch(cfg.messagesUrl, { cache: 'no-store' })
+              .then(r => r.text())
+              .then(txt => {
+                const isJson = cfg.messagesUrl.toLowerCase().endsWith('.json');
+                messages = isJson ? (JSON.parse(txt) || []) : txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+              })
+              .catch(() => {});
+          }
+          origNext();
+        }
+      }
+
+      // Expose a minimal debug API via window for quick testing in OBS' Interact mode
+      window.OBSTicker = {
+        setMessages(arr) { if (Array.isArray(arr) && arr.length) { messages = arr.map(String); index = 0; } },
+        next() { if (!animating) nextSlide(); },
+      };
+    })();
+  </script>
+</body>
+</html>
