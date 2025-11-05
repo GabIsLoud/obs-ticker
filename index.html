@@ -13,8 +13,9 @@
       --speed: 160;         /* px per second */
       --paddingY: 6;        /* px */
       --paddingX: 16;       /* px */
-      --gapX: 16;           /* px between logo and text */
+      --gapX: 12;           /* px between logo and text */
       --collapseMs: 0;      /* 0 = never collapse */
+      --fadeMs: 320;       /* fade in/out duration in ms */
       --logoUrl: "logo.png";/* default path; override via ?logo= */
       --messagesUrl: "messages.txt"; /* newline‑separated file by default */
       --shadow: 0 1px 2px rgba(0,0,0,0.35);
@@ -39,6 +40,16 @@
       backdrop-filter: blur(2px);
       background: var(--bg);
       text-shadow: var(--shadow);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity calc(var(--fadeMs) * 1ms) ease, transform calc(var(--fadeMs) * 1ms) ease;
+    }
+
+    /* Fade/collapse state */
+    #tickerRoot.isHidden {
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
     }
 
     #track {
@@ -53,9 +64,9 @@
       top: 50%; transform: translateY(-50%);
       white-space: nowrap;
       will-change: transform;
-      display: inline-flex;
+      display: flex; /* inline-flex -> flex for wider compatibility */
       align-items: center;
-      gap: calc(var(--gapX) * 1px);
+      gap: calc(var(--gapX) * 1px); /* modern engines */
     }
 
     .logo {
@@ -65,6 +76,7 @@
       vertical-align: middle;
       image-rendering: auto;
       filter: drop-shadow(0 1px 1px rgba(0,0,0,0.35));
+      margin-inline: 0.35em; /* fallback spacing if flex gap unsupported */
     }
 
     .msg {
@@ -173,9 +185,9 @@
         index++;
         runOnce(msg).then(() => {
           if (cfg.collapseMs > 0) {
-            root.style.display = 'none';
+            root.classList.add('isHidden'); root.setAttribute('aria-hidden','true');
             setTimeout(() => {
-              root.style.display = '';
+              root.classList.remove('isHidden'); root.setAttribute('aria-hidden','false');
               nextSlide();
             }, cfg.collapseMs);
           } else {
