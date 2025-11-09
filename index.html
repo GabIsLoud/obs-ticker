@@ -184,15 +184,20 @@
         const msg = messages[index % messages.length];
         index++;
         runOnce(msg).then(() => {
-          if (cfg.collapseMs > 0) {
-            root.classList.add('isHidden'); root.setAttribute('aria-hidden','true');
-            setTimeout(() => {
-              root.classList.remove('isHidden'); root.setAttribute('aria-hidden','false');
+          // Ensure the final offscreen frame is painted before we fade
+          requestAnimationFrame(() => {
+            if (cfg.collapseMs > 0) {
+              root.classList.add('isHidden');
+              root.setAttribute('aria-hidden','true');
+              setTimeout(() => {
+                root.classList.remove('isHidden');
+                root.setAttribute('aria-hidden','false');
+                nextSlide();
+              }, cfg.collapseMs);
+            } else {
               nextSlide();
-            }, cfg.collapseMs);
-          } else {
-            nextSlide();
-          }
+            }
+          });
         });
       }
 
@@ -239,7 +244,8 @@
             const slideRect = slide.getBoundingClientRect();
             const contentWidth = slideRect.width;
             const startX = trackRect.width;         // start just off the right edge
-            const endX = -contentWidth;             // finish when fully off left
+            const offscreenPadding = 4;             // small safety buffer (px)
+            const endX = -(contentWidth + offscreenPadding);
             const totalDistance = startX - endX;
             const pxPerSec = cfg.speed;
             const durationMs = (totalDistance / pxPerSec) * 1000;
