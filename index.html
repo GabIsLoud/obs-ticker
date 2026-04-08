@@ -265,13 +265,9 @@
       function choosePreset(key) {
         const preset = PRESETS[key];
         if (!preset) return;
-
+      
         selectedPresetKey = key;
-        const nextUrl = new URL(location.href);
-        nextUrl.search = '';
-        nextUrl.searchParams.set('preset', key);
-        history.replaceState({}, '', nextUrl.toString());
-
+      
         presetPicker.hidden = true;
         track.hidden = false;
         initTicker(buildConfig(preset), { resetAnimationState: true });
@@ -527,9 +523,12 @@
           raf = null;
           animating = false;
           loopStarted = false;
+          index = 0;
+          messages = [];
           track.innerHTML = '';
+          track.hidden = true;
+          presetPicker.hidden = false;
           renderPresetPicker();
-          history.replaceState({}, '', location.pathname);
         }
       };
     })();
