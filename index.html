@@ -9,15 +9,15 @@
       --bg: rgba(0,0,0,0.6);
       --fg: #ffffff;
       --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      --size: 48;           /* px */
-      --speed: 160;         /* px per second */
-      --paddingY: 6;        /* px */
-      --paddingX: 16;       /* px */
-      --gapX: 12;           /* px between logo and text */
-      --collapseMs: 0;      /* 0 = never collapse */
-      --fadeMs: 320;       /* fade in/out duration in ms */
-      --logoUrl: "logo.png";/* default path; override via ?logo= */
-      --messagesUrl: "messages.txt"; /* newline‑separated file by default */
+      --size: 48;
+      --speed: 160;
+      --paddingY: 6;
+      --paddingX: 16;
+      --gapX: 12;
+      --collapseMs: 0;
+      --fadeMs: 320;
+      --logoUrl: "logo.png";
+      --messagesUrl: "messages.txt";
       --shadow: 0 1px 2px rgba(0,0,0,0.35);
     }
 
@@ -25,7 +25,6 @@
       margin: 0; height: 100%; background: transparent; overflow: hidden;
     }
 
-    /* Root sizing is driven by font-size to make height auto‑scale. */
     #tickerRoot {
       position: relative;
       width: 100vw;
@@ -43,20 +42,27 @@
       opacity: 1;
       transform: translateY(0);
       transition: opacity calc(var(--fadeMs) * 1ms) ease, transform calc(var(--fadeMs) * 1ms) ease;
+      overflow: hidden;
     }
 
-    /* Fade/collapse state */
     #tickerRoot.isHidden {
       opacity: 0;
       transform: translateY(-6px);
       pointer-events: none;
     }
 
-    #track {
+    #track,
+    #presetPicker {
       position: relative;
       flex: 1 1 auto;
-      height: 1.25em; /* ensures consistent vertical centering */
+      min-width: 0;
+      height: 1.25em;
       overflow: hidden;
+    }
+
+    #track[hidden],
+    #presetPicker[hidden] {
+      display: none !important;
     }
 
     .slide {
@@ -64,19 +70,19 @@
       top: 50%; transform: translateY(-50%);
       white-space: nowrap;
       will-change: transform;
-      display: flex; /* inline-flex -> flex for wider compatibility */
+      display: flex;
       align-items: center;
-      gap: calc(var(--gapX) * 1px); /* modern engines */
+      gap: calc(var(--gapX) * 1px);
     }
 
     .logo {
-      height: 1em; /* match text height */
+      height: 1em;
       width: auto; aspect-ratio: auto;
       display: inline-block;
       vertical-align: middle;
       image-rendering: auto;
       filter: drop-shadow(0 1px 1px rgba(0,0,0,0.35));
-      margin-inline: 0.35em; /* fallback spacing if flex gap unsupported */
+      margin-inline: 0.35em;
     }
 
     .msg {
@@ -84,7 +90,45 @@
       letter-spacing: 0.5px;
     }
 
-    /* Optional top/bottom hairlines for a newsy vibe; toggle via ?rules=1 */
+    #presetPicker {
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      gap: 0.4em;
+    }
+
+    .presetBtn {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 100%;
+      border: 0;
+      border-radius: 0.35em;
+      background: rgba(255,255,255,0.12);
+      color: var(--fg);
+      font: inherit;
+      font-size: 0.52em;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0 0.7em;
+      cursor: pointer;
+      transition: background 120ms ease, transform 120ms ease, opacity 120ms ease;
+      text-shadow: inherit;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .presetBtn:hover,
+    .presetBtn:focus-visible {
+      background: rgba(255,255,255,0.2);
+      outline: none;
+    }
+
+    .presetBtn:active {
+      transform: translateY(1px);
+    }
+
     #tickerRoot.rules::before,
     #tickerRoot.rules::after {
       content: ""; position: absolute; left: 0; right: 0; height: 2px; opacity: 0.5;
@@ -96,104 +140,262 @@
 </head>
 <body>
   <div id="tickerRoot" aria-live="polite" aria-atomic="true">
+    <div id="presetPicker" hidden></div>
     <div id="track"></div>
   </div>
 
   <script>
     (function() {
+      const PRESETS = {
+        generic: {
+          label: 'Generic',
+          src: 'messages.txt',
+          bg: 'rgba(0,92,75,1)',
+          fg: '#FFFFFF',
+          size: 30,
+          speed: 160,
+          logo: 'justG.png',
+          collapse: 510000,
+          fadeMs: 450,
+          gap: 14,
+          rules: '1'
+        },
+        hollowknight: {
+          label: 'Hollow Knight',
+          src: 'messagesHK.txt',
+          bg: 'rgba(40,40,40,0.9)',
+          fg: '#FFFFFF',
+          size: 30,
+          speed: 160,
+          logo: 'justG.png',
+          collapse: 510000,
+          fadeMs: 500,
+          gap: 14,
+          rules: '1',
+          font: 'Cinzel, serif',
+          fontUrl: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap'
+        },
+        fallout: {
+          label: 'Fallout',
+          src: 'messagesFO3.txt',
+          bg: 'rgba(0,81,164,0.95)',
+          fg: '#F9E65C',
+          size: 30,
+          speed: 160,
+          logo: 'justG.png',
+          collapse: 510000,
+          fadeMs: 480,
+          gap: 14,
+          rules: '1',
+          font: 'Oswald, Arial, sans-serif',
+          fontUrl: 'https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap'
+        },
+        finalfantasy: {
+          label: 'Final Fantasy',
+          src: 'messagesFF.txt',
+          bg: 'rgba(0,130,120,0.88)',
+          fg: '#EFFFFA',
+          size: 30,
+          speed: 160,
+          logo: 'justG.png',
+          collapse: 510000,
+          fadeMs: 450,
+          gap: 14,
+          rules: '1',
+          font: 'Rajdhani, Arial, sans-serif',
+          fontUrl: 'https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap'
+        },
+        dbd: {
+          label: 'Dead by Daylight',
+          src: 'messagesDBD.txt',
+          bg: 'linear-gradient(90deg,rgba(20,20,20,1),rgba(0,0,0,1))',
+          fg: '#CC3333',
+          size: 30,
+          speed: 155,
+          logo: 'justG.png',
+          collapse: 510000,
+          fadeMs: 500,
+          gap: 14,
+          rules: '1',
+          font: '"Special Elite", cursive',
+          fontUrl: 'https://fonts.googleapis.com/css2?family=Special+Elite&display=swap'
+        }
+      };
+
       const qp = new URLSearchParams(location.search);
       const root = document.getElementById('tickerRoot');
       const track = document.getElementById('track');
+      const presetPicker = document.getElementById('presetPicker');
 
-      // --- Config via query params ---
-      const cfg = {
-        bg: qp.get('bg') ?? getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
-        fg: qp.get('fg') ?? getComputedStyle(document.documentElement).getPropertyValue('--fg').trim(),
-        font: qp.get('font') ?? getComputedStyle(document.documentElement).getPropertyValue('--font').trim(),
-        size: clampNum(qp.get('size'), 12, 200, +getCssVar('--size')),
-        speed: clampNum(qp.get('speed'), 20, 2000, +getCssVar('--speed')),
-        paddingY: clampNum(qp.get('py'), 0, 100, +getCssVar('--paddingY')),
-        paddingX: clampNum(qp.get('px'), 0, 200, +getCssVar('--paddingX')),
-        gapX: clampNum(qp.get('gap'), 0, 200, +getCssVar('--gapX')),
-        collapseMs: clampNum(qp.get('collapse'), 0, 3600000, +getCssVar('--collapseMs')),
-        logoUrl: qp.get('logo') || getCssVar('--logoUrl').replace(/\"/g, '').trim(),
-        messagesUrl: qp.get('src') || getCssVar('--messagesUrl').replace(/\"/g, '').trim(),
-        fontUrl: qp.get('fontUrl') || '',
-        rules: qp.get('rules') === '1',
-        // Optional: direction=rtl for right‑to‑left entry
-        direction: (qp.get('direction') === 'rtl') ? 'rtl' : 'ltr',
-      };
-
-      // Apply base styles
-      setCssVar('--bg', cfg.bg);
-      setCssVar('--fg', cfg.fg);
-      setCssVar('--font', cfg.font);
-      setCssVar('--size', cfg.size);
-      setCssVar('--speed', cfg.speed);
-      setCssVar('--paddingY', cfg.paddingY);
-      setCssVar('--paddingX', cfg.paddingX);
-      setCssVar('--gapX', cfg.gapX);
-
-      if (cfg.rules) root.classList.add('rules');
-
-      if (cfg.fontUrl) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = cfg.fontUrl;
-        document.head.appendChild(link);
-      }
-
-      // Fetch messages (supports .txt (newline separated) or .json (array of strings))
       let messages = [];
-      fetch(cfg.messagesUrl, { cache: 'no-store' })
-        .then(r => {
-          const url = cfg.messagesUrl.toLowerCase();
-          const isJson = url.endsWith('.json');
-          return r.text().then(txt => ({txt, isJson}));
-        })
-        .then(({txt, isJson}) => {
-          try {
-            if (isJson) {
-              const arr = JSON.parse(txt);
-              messages = (Array.isArray(arr) ? arr : []).map(s => String(s)).filter(Boolean);
-            } else {
-              messages = txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-            }
-          } catch (e) {
-            console.error('Failed to parse messages:', e);
-          }
-          if (!messages.length) messages = ["Welcome to the stream!", "Don't forget to subscribe!", "Check out gabisness.com"]; // fallback
-          startLoop();
-        })
-        .catch(err => {
-          console.error('Failed to load messages:', err);
-          messages = ["(ticker) Unable to load messages file."];
-          startLoop();
-        });
-
       let index = 0;
       let raf = null;
       let animating = false;
+      let selectedPresetKey = normalizePresetKey(qp.get('preset'));
+      let currentCfg = null;
+      let loopStarted = false;
 
-      function startLoop() {
-        nextSlide();
+      const presetFromQuery = PRESETS[selectedPresetKey] || null;
+      const usingDirectSrc = !!qp.get('src');
+
+      if (!presetFromQuery && !usingDirectSrc) {
+        renderPresetPicker();
+        return;
+      }
+
+      initTicker(buildConfig(presetFromQuery));
+
+      function renderPresetPicker() {
+        track.hidden = true;
+        presetPicker.hidden = false;
+        presetPicker.innerHTML = '';
+        applyPickerChrome();
+
+        Object.entries(PRESETS).forEach(([key, preset]) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'presetBtn';
+          btn.textContent = preset.label;
+          btn.title = preset.label;
+          btn.addEventListener('click', () => choosePreset(key));
+          presetPicker.appendChild(btn);
+        });
+      }
+
+      function choosePreset(key) {
+        const preset = PRESETS[key];
+        if (!preset) return;
+
+        selectedPresetKey = key;
+        const nextUrl = new URL(location.href);
+        nextUrl.search = '';
+        nextUrl.searchParams.set('preset', key);
+        history.replaceState({}, '', nextUrl.toString());
+
+        presetPicker.hidden = true;
+        track.hidden = false;
+        initTicker(buildConfig(preset), { resetAnimationState: true });
+      }
+
+      function applyPickerChrome() {
+        root.classList.remove('rules', 'isHidden');
+        root.setAttribute('aria-hidden', 'false');
+        setCssVar('--bg', 'rgba(0,0,0,0.75)');
+        setCssVar('--fg', '#ffffff');
+        setCssVar('--font', 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif');
+        setCssVar('--size', clampNum(qp.get('size'), 12, 200, 30));
+        setCssVar('--paddingY', clampNum(qp.get('py'), 0, 100, 6));
+        setCssVar('--paddingX', clampNum(qp.get('px'), 0, 200, 16));
+        setCssVar('--gapX', clampNum(qp.get('gap'), 0, 200, 14));
+      }
+
+      function initTicker(cfg, opts = {}) {
+        if (opts.resetAnimationState) {
+          if (raf) cancelAnimationFrame(raf);
+          raf = null;
+          animating = false;
+          index = 0;
+          messages = [];
+          loopStarted = false;
+          track.innerHTML = '';
+        }
+
+        currentCfg = cfg;
+
+        setCssVar('--bg', cfg.bg);
+        setCssVar('--fg', cfg.fg);
+        setCssVar('--font', cfg.font);
+        setCssVar('--size', cfg.size);
+        setCssVar('--speed', cfg.speed);
+        setCssVar('--paddingY', cfg.paddingY);
+        setCssVar('--paddingX', cfg.paddingX);
+        setCssVar('--gapX', cfg.gapX);
+        setCssVar('--fadeMs', cfg.fadeMs);
+
+        root.classList.toggle('rules', !!cfg.rules);
+
+        if (cfg.fontUrl) ensureFontLoaded(cfg.fontUrl);
+
+        fetchMessages(cfg.messagesUrl)
+          .then(loaded => {
+            messages = loaded.length ? loaded : [
+              'Welcome to the stream!',
+              "Don't forget to subscribe!",
+              'Check out gabisness.com'
+            ];
+            if (!loopStarted) {
+              loopStarted = true;
+              nextSlide();
+            }
+          })
+          .catch(err => {
+            console.error('Failed to load messages:', err);
+            messages = ['(ticker) Unable to load messages file.'];
+            if (!loopStarted) {
+              loopStarted = true;
+              nextSlide();
+            }
+          });
+      }
+
+      function buildConfig(preset) {
+        const merged = {
+          ...(preset || {}),
+          ...(qp.get('bg') ? { bg: qp.get('bg') } : {}),
+          ...(qp.get('fg') ? { fg: qp.get('fg') } : {}),
+          ...(qp.get('font') ? { font: qp.get('font') } : {}),
+          ...(qp.get('fontUrl') ? { fontUrl: qp.get('fontUrl') } : {}),
+          ...(qp.get('logo') ? { logo: qp.get('logo') } : {}),
+          ...(qp.get('src') ? { src: qp.get('src') } : {}),
+          ...(qp.get('rules') ? { rules: qp.get('rules') } : {}),
+          ...(qp.get('direction') ? { direction: qp.get('direction') } : {})
+        };
+
+        return {
+          bg: merged.bg ?? getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
+          fg: merged.fg ?? getComputedStyle(document.documentElement).getPropertyValue('--fg').trim(),
+          font: merged.font ?? getComputedStyle(document.documentElement).getPropertyValue('--font').trim(),
+          size: clampNum(qp.get('size') ?? merged.size, 12, 200, +getCssVar('--size')),
+          speed: clampNum(qp.get('speed') ?? merged.speed, 20, 2000, +getCssVar('--speed')),
+          paddingY: clampNum(qp.get('py'), 0, 100, +getCssVar('--paddingY')),
+          paddingX: clampNum(qp.get('px'), 0, 200, +getCssVar('--paddingX')),
+          gapX: clampNum(qp.get('gap') ?? merged.gap, 0, 200, +getCssVar('--gapX')),
+          collapseMs: clampNum(qp.get('collapse') ?? merged.collapse, 0, 3600000, +getCssVar('--collapseMs')),
+          fadeMs: clampNum(qp.get('fadeMs') ?? merged.fadeMs, 0, 60000, +getCssVar('--fadeMs')),
+          logoUrl: merged.logo || getCssVar('--logoUrl').replace(/"/g, '').trim(),
+          messagesUrl: merged.src || getCssVar('--messagesUrl').replace(/"/g, '').trim(),
+          fontUrl: merged.fontUrl || '',
+          rules: String(merged.rules ?? '') === '1',
+          direction: (String(merged.direction ?? '').toLowerCase() === 'rtl') ? 'rtl' : 'ltr'
+        };
+      }
+
+      function fetchMessages(messagesUrl) {
+        return fetch(messagesUrl, { cache: 'no-store' })
+          .then(r => r.text().then(txt => ({ txt, isJson: messagesUrl.toLowerCase().endsWith('.json') })))
+          .then(({ txt, isJson }) => {
+            if (isJson) {
+              const arr = JSON.parse(txt);
+              return (Array.isArray(arr) ? arr : []).map(s => String(s)).filter(Boolean);
+            }
+            return txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+          });
       }
 
       function nextSlide() {
-        if (animating) return;
+        if (animating || !currentCfg) return;
         const msg = messages[index % messages.length];
         index++;
         runOnce(msg).then(() => {
-          // Ensure the final offscreen frame is painted before we fade
           requestAnimationFrame(() => {
-            if (cfg.collapseMs > 0) {
+            if (currentCfg.collapseMs > 0) {
               root.classList.add('isHidden');
-              root.setAttribute('aria-hidden','true');
+              root.setAttribute('aria-hidden', 'true');
               setTimeout(() => {
                 root.classList.remove('isHidden');
-                root.setAttribute('aria-hidden','false');
+                root.setAttribute('aria-hidden', 'false');
                 nextSlide();
-              }, cfg.collapseMs);
+              }, currentCfg.collapseMs);
             } else {
               nextSlide();
             }
@@ -203,7 +405,6 @@
 
       function runOnce(text) {
         return new Promise(resolve => {
-          // Reset track
           track.innerHTML = '';
 
           const slide = document.createElement('div');
@@ -213,7 +414,7 @@
           imgL.className = 'logo';
           imgL.alt = '';
           imgL.decoding = 'async';
-          imgL.src = cfg.logoUrl;
+          imgL.src = currentCfg.logoUrl;
 
           const span = document.createElement('span');
           span.className = 'msg';
@@ -223,10 +424,9 @@
           imgR.className = 'logo';
           imgR.alt = '';
           imgR.decoding = 'async';
-          imgR.src = cfg.logoUrl;
+          imgR.src = currentCfg.logoUrl;
 
-          // Order respects direction visually, but we always move left for simplicity
-          if (cfg.direction === 'rtl') {
+          if (currentCfg.direction === 'rtl') {
             slide.appendChild(imgR.cloneNode());
             slide.appendChild(span);
             slide.appendChild(imgL.cloneNode());
@@ -238,17 +438,15 @@
 
           track.appendChild(slide);
 
-          // Force a frame to measure
           requestAnimationFrame(() => {
             const trackRect = track.getBoundingClientRect();
             const slideRect = slide.getBoundingClientRect();
             const contentWidth = slideRect.width;
-            const startX = trackRect.width;         // start just off the right edge
-            const offscreenPadding = 4;             // small safety buffer (px)
+            const startX = trackRect.width;
+            const offscreenPadding = 4;
             const endX = -(contentWidth + offscreenPadding);
             const totalDistance = startX - endX;
-            const pxPerSec = cfg.speed;
-            const durationMs = (totalDistance / pxPerSec) * 1000;
+            const durationMs = (totalDistance / currentCfg.speed) * 1000;
 
             let start = null;
             animating = true;
@@ -267,14 +465,24 @@
               }
             }
 
-            // Initialize position and kick off
             slide.style.transform = `translate(${startX}px, -50%)`;
             raf = requestAnimationFrame(step);
           });
         });
       }
 
-      // Utilities
+      function ensureFontLoaded(url) {
+        if ([...document.querySelectorAll('link[data-ticker-font]')].some(link => link.href === url)) return;
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        link.dataset.tickerFont = '1';
+        document.head.appendChild(link);
+      }
+
+      function normalizePresetKey(value) {
+        return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      }
       function lerp(a, b, t) { return a + (b - a) * t; }
       function clampNum(v, min, max, fallback) {
         const n = Number(v);
@@ -288,23 +496,19 @@
         document.documentElement.style.setProperty(name, value);
       }
 
-      // Resize handling (safe in OBS browser source too)
-      addEventListener('resize', () => {
-        // No special handling needed; next slide uses fresh measurements
-      });
+      addEventListener('resize', () => {});
 
-      // Hot reload messages every N slides (optional): ?reloadEvery=10
       const reloadEvery = clampNum(qp.get('reloadEvery'), 0, 1000, 0);
       if (reloadEvery > 0) {
         let shown = 0;
         const origNext = nextSlide;
         nextSlide = function patchedNext() {
           shown++;
-          if (shown % reloadEvery === 0) {
-            fetch(cfg.messagesUrl, { cache: 'no-store' })
+          if (shown % reloadEvery === 0 && currentCfg) {
+            fetch(currentCfg.messagesUrl, { cache: 'no-store' })
               .then(r => r.text())
               .then(txt => {
-                const isJson = cfg.messagesUrl.toLowerCase().endsWith('.json');
+                const isJson = currentCfg.messagesUrl.toLowerCase().endsWith('.json');
                 messages = isJson ? (JSON.parse(txt) || []) : txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
               })
               .catch(() => {});
@@ -313,10 +517,20 @@
         }
       }
 
-      // Expose a minimal debug API via window for quick testing in OBS' Interact mode
       window.OBSTicker = {
+        presets: Object.fromEntries(Object.entries(PRESETS).map(([k, v]) => [k, v.label])),
+        choosePreset,
         setMessages(arr) { if (Array.isArray(arr) && arr.length) { messages = arr.map(String); index = 0; } },
         next() { if (!animating) nextSlide(); },
+        showPicker() {
+          if (raf) cancelAnimationFrame(raf);
+          raf = null;
+          animating = false;
+          loopStarted = false;
+          track.innerHTML = '';
+          renderPresetPicker();
+          history.replaceState({}, '', location.pathname);
+        }
       };
     })();
   </script>
