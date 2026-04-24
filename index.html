@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OBS Side‑Scrolling Ticker</title>
+  <title>OBS Side-Scrolling Ticker</title>
   <style>
     :root {
       --bg: rgba(0,0,0,0.6);
@@ -22,7 +22,10 @@
     }
 
     html, body {
-      margin: 0; height: 100%; background: transparent; overflow: hidden;
+      margin: 0;
+      height: 100%;
+      background: transparent;
+      overflow: hidden;
     }
 
     #tickerRoot {
@@ -41,7 +44,9 @@
       text-shadow: var(--shadow);
       opacity: 1;
       transform: translateY(0);
-      transition: opacity calc(var(--fadeMs) * 1ms) ease, transform calc(var(--fadeMs) * 1ms) ease;
+      transition:
+        opacity calc(var(--fadeMs) * 1ms) ease,
+        transform calc(var(--fadeMs) * 1ms) ease;
       overflow: hidden;
     }
 
@@ -67,7 +72,8 @@
 
     .slide {
       position: absolute;
-      top: 50%; transform: translateY(-50%);
+      top: 50%;
+      transform: translateY(-50%);
       white-space: nowrap;
       will-change: transform;
       display: flex;
@@ -77,7 +83,8 @@
 
     .logo {
       height: 1em;
-      width: auto; aspect-ratio: auto;
+      width: auto;
+      aspect-ratio: auto;
       display: inline-block;
       vertical-align: middle;
       image-rendering: auto;
@@ -131,9 +138,15 @@
 
     #tickerRoot.rules::before,
     #tickerRoot.rules::after {
-      content: ""; position: absolute; left: 0; right: 0; height: 2px; opacity: 0.5;
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      opacity: 0.5;
       background: linear-gradient(90deg, transparent, var(--fg), transparent);
     }
+
     #tickerRoot.rules::before { top: 0; }
     #tickerRoot.rules::after  { bottom: 0; }
   </style>
@@ -145,105 +158,63 @@
   </div>
 
   <script>
-    (function() {
-      const PRESETS = {
-        generic: {
-          label: 'Generic',
-          src: 'messages.txt',
-          bg: 'rgba(0,92,75,1)',
-          fg: '#FFFFFF',
-          size: 30,
-          speed: 160,
-          logo: 'justG.png',
-          collapse: 510000,
-          fadeMs: 450,
-          gap: 14,
-          rules: '1'
-        },
-        hollowknight: {
-          label: 'Hollow Knight',
-          src: 'messagesHK.txt',
-          bg: 'rgba(40,40,40,0.9)',
-          fg: '#FFFFFF',
-          size: 30,
-          speed: 160,
-          logo: 'justG.png',
-          collapse: 510000,
-          fadeMs: 500,
-          gap: 14,
-          rules: '1',
-          font: 'Cinzel, serif',
-          fontUrl: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap'
-        },
-        fallout: {
-          label: 'Fallout',
-          src: 'messagesFO3.txt',
-          bg: 'rgba(0,81,164,0.95)',
-          fg: '#F9E65C',
-          size: 30,
-          speed: 160,
-          logo: 'justG.png',
-          collapse: 510000,
-          fadeMs: 480,
-          gap: 14,
-          rules: '1',
-          font: 'Oswald, Arial, sans-serif',
-          fontUrl: 'https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap'
-        },
-        finalfantasy: {
-          label: 'Final Fantasy',
-          src: 'messagesFF.txt',
-          bg: 'rgba(0,130,120,0.88)',
-          fg: '#EFFFFA',
-          size: 30,
-          speed: 160,
-          logo: 'justG.png',
-          collapse: 510000,
-          fadeMs: 450,
-          gap: 14,
-          rules: '1',
-          font: 'Rajdhani, Arial, sans-serif',
-          fontUrl: 'https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap'
-        },
-        dbd: {
-          label: 'Dead by Daylight',
-          src: 'messagesDBD.txt',
-          bg: 'linear-gradient(90deg,rgba(20,20,20,1),rgba(0,0,0,1))',
-          fg: '#CC3333',
-          size: 30,
-          speed: 155,
-          logo: 'justG.png',
-          collapse: 510000,
-          fadeMs: 500,
-          gap: 14,
-          rules: '1',
-          font: '"Special Elite", cursive',
-          fontUrl: 'https://fonts.googleapis.com/css2?family=Special+Elite&display=swap'
-        }
-      };
-
+    (function () {
       const qp = new URLSearchParams(location.search);
       const root = document.getElementById('tickerRoot');
       const track = document.getElementById('track');
       const presetPicker = document.getElementById('presetPicker');
 
-      let messages = [];
-      let index = 0;
+      const MANIFEST_URL = qp.get('manifest') || 'games.json';
+
+      let PRESETS = {};
+      let PRESET_ORDER = [];
+
+      let allMessages = [];
+      let messagePool = [];
+      let lastMessage = '';
+
       let raf = null;
       let animating = false;
-      let selectedPresetKey = normalizePresetKey(qp.get('preset'));
       let currentCfg = null;
       let loopStarted = false;
+      let selectedPresetKey = normalizePresetKey(qp.get('preset'));
 
-      const presetFromQuery = PRESETS[selectedPresetKey] || null;
-      const usingDirectSrc = !!qp.get('src');
+      bootstrap();
 
-      if (!presetFromQuery && !usingDirectSrc) {
-        renderPresetPicker();
-        return;
+      async function bootstrap() {
+        try {
+          const manifest = await fetch(MANIFEST_URL, { cache: 'no-store' }).then(r => {
+            if (!r.ok) throw new Error(`Manifest load failed: ${r.status}`);
+            return r.json();
+          });
+
+          PRESETS = {};
+          PRESET_ORDER = [];
+
+          const games = Array.isArray(manifest.games) ? manifest.games : [];
+          for (const item of games) {
+            if (!item || !item.key || !item.label || !item.src) continue;
+            const key = normalizePresetKey(item.key);
+            PRESETS[key] = item;
+            PRESET_ORDER.push(key);
+          }
+
+          const presetFromQuery = PRESETS[selectedPresetKey] || null;
+          const usingDirectSrc = !!qp.get('src');
+
+          if (!presetFromQuery && !usingDirectSrc) {
+            renderPresetPicker();
+            return;
+          }
+
+          initTicker(buildConfig(presetFromQuery));
+        } catch (err) {
+          console.error('Failed to load games manifest:', err);
+          PRESETS = {};
+          PRESET_ORDER = [];
+          renderPresetPicker();
+        }
       }
-
-      initTicker(buildConfig(presetFromQuery));
 
       function renderPresetPicker() {
         track.hidden = true;
@@ -251,7 +222,8 @@
         presetPicker.innerHTML = '';
         applyPickerChrome();
 
-        Object.entries(PRESETS).forEach(([key, preset]) => {
+        PRESET_ORDER.forEach((key) => {
+          const preset = PRESETS[key];
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'presetBtn';
@@ -265,9 +237,8 @@
       function choosePreset(key) {
         const preset = PRESETS[key];
         if (!preset) return;
-      
+
         selectedPresetKey = key;
-      
         presetPicker.hidden = true;
         track.hidden = false;
         initTicker(buildConfig(preset), { resetAnimationState: true });
@@ -290,9 +261,10 @@
           if (raf) cancelAnimationFrame(raf);
           raf = null;
           animating = false;
-          index = 0;
-          messages = [];
           loopStarted = false;
+          allMessages = [];
+          messagePool = [];
+          lastMessage = '';
           track.innerHTML = '';
         }
 
@@ -314,11 +286,18 @@
 
         fetchMessages(cfg.messagesUrl)
           .then(loaded => {
-            messages = loaded.length ? loaded : [
-              'Welcome to the stream!',
-              "Don't forget to subscribe!",
-              'Check out gabisness.com'
-            ];
+            allMessages = normalizeMessages(loaded);
+
+            if (!allMessages.length) {
+              allMessages = [
+                'Welcome to the stream!',
+                "Don’t forget to subscribe!",
+                'Check out gabisness.com'
+              ];
+            }
+
+            refillMessagePool();
+
             if (!loopStarted) {
               loopStarted = true;
               nextSlide();
@@ -326,7 +305,9 @@
           })
           .catch(err => {
             console.error('Failed to load messages:', err);
-            messages = ['(ticker) Unable to load messages file.'];
+            allMessages = ['(ticker) Unable to load messages file.'];
+            refillMessagePool();
+
             if (!loopStarted) {
               loopStarted = true;
               nextSlide();
@@ -368,7 +349,13 @@
 
       function fetchMessages(messagesUrl) {
         return fetch(messagesUrl, { cache: 'no-store' })
-          .then(r => r.text().then(txt => ({ txt, isJson: messagesUrl.toLowerCase().endsWith('.json') })))
+          .then(r => {
+            if (!r.ok) throw new Error(`Messages load failed: ${r.status}`);
+            return r.text().then(txt => ({
+              txt,
+              isJson: messagesUrl.toLowerCase().endsWith('.json')
+            }));
+          })
           .then(({ txt, isJson }) => {
             if (isJson) {
               const arr = JSON.parse(txt);
@@ -378,10 +365,67 @@
           });
       }
 
+      function normalizeMessages(arr) {
+        const seen = new Set();
+        const out = [];
+
+        for (const raw of arr) {
+          const s = String(raw || '').trim();
+          if (!s) continue;
+
+          const key = s.toLowerCase();
+          if (seen.has(key)) continue;
+
+          seen.add(key);
+          out.push(s);
+        }
+
+        return out;
+      }
+
+      function shuffleArray(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function refillMessagePool() {
+        if (!allMessages.length) {
+          messagePool = [];
+          return;
+        }
+
+        let nextPool = shuffleArray(allMessages);
+
+        if (lastMessage && nextPool.length > 1 && nextPool[0] === lastMessage) {
+          const swapIndex = nextPool.findIndex(msg => msg !== lastMessage);
+          if (swapIndex > 0) {
+            [nextPool[0], nextPool[swapIndex]] = [nextPool[swapIndex], nextPool[0]];
+          }
+        }
+
+        messagePool = nextPool;
+      }
+
+      function getNextMessage() {
+        if (!messagePool.length) {
+          refillMessagePool();
+        }
+
+        const msg = messagePool.shift() || '';
+        lastMessage = msg;
+        return msg;
+      }
+
       function nextSlide() {
         if (animating || !currentCfg) return;
-        const msg = messages[index % messages.length];
-        index++;
+
+        const msg = getNextMessage();
+        if (!msg) return;
+
         runOnce(msg).then(() => {
           requestAnimationFrame(() => {
             if (currentCfg.collapseMs > 0) {
@@ -453,6 +497,7 @@
               const progress = Math.min(elapsed / durationMs, 1);
               const x = lerp(startX, endX, progress);
               slide.style.transform = `translate(${x}px, -50%)`;
+
               if (progress < 1) {
                 raf = requestAnimationFrame(step);
               } else {
@@ -479,15 +524,21 @@
       function normalizePresetKey(value) {
         return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
       }
-      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
       function clampNum(v, min, max, fallback) {
         const n = Number(v);
         if (!isFinite(n)) return fallback;
         return Math.max(min, Math.min(max, n));
       }
+
       function getCssVar(name) {
         return getComputedStyle(document.documentElement).getPropertyValue(name);
       }
+
       function setCssVar(name, value) {
         document.documentElement.style.setProperty(name, value);
       }
@@ -501,30 +552,43 @@
         nextSlide = function patchedNext() {
           shown++;
           if (shown % reloadEvery === 0 && currentCfg) {
-            fetch(currentCfg.messagesUrl, { cache: 'no-store' })
-              .then(r => r.text())
-              .then(txt => {
-                const isJson = currentCfg.messagesUrl.toLowerCase().endsWith('.json');
-                messages = isJson ? (JSON.parse(txt) || []) : txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+            fetchMessages(currentCfg.messagesUrl)
+              .then(loaded => {
+                allMessages = normalizeMessages(loaded);
+                refillMessagePool();
               })
               .catch(() => {});
           }
           origNext();
-        }
+        };
       }
 
       window.OBSTicker = {
-        presets: Object.fromEntries(Object.entries(PRESETS).map(([k, v]) => [k, v.label])),
+        get presets() {
+          return Object.fromEntries(
+            PRESET_ORDER.map(k => [k, PRESETS[k].label])
+          );
+        },
         choosePreset,
-        setMessages(arr) { if (Array.isArray(arr) && arr.length) { messages = arr.map(String); index = 0; } },
-        next() { if (!animating) nextSlide(); },
+        setMessages(arr) {
+          if (Array.isArray(arr) && arr.length) {
+            allMessages = normalizeMessages(arr.map(String));
+            messagePool = [];
+            lastMessage = '';
+            refillMessagePool();
+          }
+        },
+        next() {
+          if (!animating) nextSlide();
+        },
         showPicker() {
           if (raf) cancelAnimationFrame(raf);
           raf = null;
           animating = false;
           loopStarted = false;
-          index = 0;
-          messages = [];
+          allMessages = [];
+          messagePool = [];
+          lastMessage = '';
           track.innerHTML = '';
           track.hidden = true;
           presetPicker.hidden = false;
