@@ -173,6 +173,22 @@
       "rules": "1",
       "font": "\"Teko\", Arial, sans-serif",
       "fontUrl": "https://fonts.googleapis.com/css2?family=Teko:wght@600&display=swap"
+    },
+    {
+      "key": "tomodachilife",
+      "label": "Tomodachi Life",
+      "src": "messagesTomodachiLife.txt",
+      "bg": "rgba(124,206,132,0.96)",
+      "fg": "#17351D",
+      "size": 30,
+      "speed": 158,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 460,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Fredoka\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap"
     }
   ]
 }
