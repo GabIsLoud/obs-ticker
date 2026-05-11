@@ -189,6 +189,22 @@
       "rules": "1",
       "font": "\"Fredoka\", Arial, sans-serif",
       "fontUrl": "https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap"
+    },
+    {
+      "key": "kirbyairriders",
+      "label": "Kirby Air Riders",
+      "src": "messagesKirbyAirRiders.txt",
+      "bg": "rgba(114,174,255,0.96)",
+      "fg": "#FFF7FB",
+      "size": 30,
+      "speed": 160,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 460,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Baloo 2\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap"
     }
   ]
 }
