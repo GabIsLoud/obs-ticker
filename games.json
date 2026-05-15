@@ -15,6 +15,22 @@
       "rules": "1"
     },
     {
+      "key": "ninesols",
+      "label": "Nine Sols",
+      "src": "messagesNineSols.txt",
+      "bg": "rgba(112,31,31,0.96)",
+      "fg": "#F2E7C9",
+      "size": 30,
+      "speed": 158,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 470,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Noto Serif TC\", Georgia, serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&display=swap"
+    },
+    {
       "key": "hollowknight",
       "label": "Hollow Knight",
       "src": "messagesHK.txt",
