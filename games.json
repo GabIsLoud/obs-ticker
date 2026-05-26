@@ -15,6 +15,22 @@
       "rules": "1"
     },
     {
+      "key": "fnaf1",
+      "label": "Five Nights at Freddy's",
+      "src": "fnaf1messages.txt",
+      "bg": "linear-gradient(90deg,rgba(35,18,14,0.97),rgba(7,7,7,0.98))",
+      "fg": "#F4D8A8",
+      "size": 30,
+      "speed": 155,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 500,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"VT323\", Consolas, monospace",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=VT323&display=swap"
+    },
+    {
       "key": "mariokartworld",
       "label": "Mario Kart World",
       "src": "messagesMarioKartWorld.txt",
