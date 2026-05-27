@@ -17,7 +17,7 @@
     {
       "key": "hades",
       "label": "Hades",
-      "src": "hadesmessages.txt",
+      "src": "messagesHades.txt",
       "bg": "linear-gradient(90deg,rgba(78,16,18,0.97),rgba(13,8,20,0.98))",
       "fg": "#F6D27A",
       "size": 30,
@@ -33,7 +33,7 @@
     {
       "key": "fnaf1",
       "label": "Five Nights at Freddy's",
-      "src": "fnaf1messages.txt",
+      "src": "messagesFnaf1.txt",
       "bg": "linear-gradient(90deg,rgba(35,18,14,0.97),rgba(7,7,7,0.98))",
       "fg": "#F4D8A8",
       "size": 30,
