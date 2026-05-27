@@ -15,6 +15,22 @@
       "rules": "1"
     },
     {
+      "key": "hades",
+      "label": "Hades",
+      "src": "hadesmessages.txt",
+      "bg": "linear-gradient(90deg,rgba(78,16,18,0.97),rgba(13,8,20,0.98))",
+      "fg": "#F6D27A",
+      "size": 30,
+      "speed": 155,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 500,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Cinzel\", Georgia, serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap"
+    },
+    {
       "key": "fnaf1",
       "label": "Five Nights at Freddy's",
       "src": "fnaf1messages.txt",
