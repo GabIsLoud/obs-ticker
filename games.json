@@ -49,7 +49,7 @@
     {
       "key": "residentevil3nemesis",
       "label": "Resident Evil 3: Nemesis",
-      "src": "residentevil3nemesismessages.txt",
+      "src": "residentevil3messages.txt",
       "bg": "linear-gradient(90deg,rgba(5,11,9,0.98),rgba(48,8,10,0.96),rgba(8,8,13,0.98))",
       "fg": "#D7E8C2",
       "size": 30,
@@ -143,22 +143,6 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap"
     },
     {
-      "key": "hollowknight",
-      "label": "Hollow Knight",
-      "src": "messagesHK.txt",
-      "bg": "rgba(40,40,40,0.9)",
-      "fg": "#FFFFFF",
-      "size": 30,
-      "speed": 160,
-      "logo": "justG.png",
-      "collapse": 510000,
-      "fadeMs": 500,
-      "gap": 14,
-      "rules": "1",
-      "font": "Cinzel, serif",
-      "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap"
-    },
-    {
       "key": "fallout4",
       "label": "Fallout 4",
       "src": "messagesFO4.txt",
@@ -207,22 +191,6 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Special+Elite&display=swap"
     },
     {
-      "key": "cuphead",
-      "label": "Cuphead",
-      "src": "messagesCuphead.txt",
-      "bg": "rgba(245,232,208,0.96)",
-      "fg": "#2E2018",
-      "size": 30,
-      "speed": 160,
-      "logo": "justG.png",
-      "collapse": 510000,
-      "fadeMs": 470,
-      "gap": 14,
-      "rules": "1",
-      "font": "\"Alegreya Sans SC\", Georgia, serif",
-      "fontUrl": "https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@700&display=swap"
-    },
-    {
       "key": "deadlock",
       "label": "Deadlock",
       "src": "messagesDeadlock.txt",
@@ -269,22 +237,6 @@
       "rules": "1",
       "font": "\"Nunito Sans\", Arial, sans-serif",
       "fontUrl": "https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@800&display=swap"
-    },
-    {
-      "key": "residentevil",
-      "label": "Resident Evil",
-      "src": "messagesRE.txt",
-      "bg": "rgba(18,18,18,0.97)",
-      "fg": "#D8D8D8",
-      "size": 30,
-      "speed": 155,
-      "logo": "justG.png",
-      "collapse": 510000,
-      "fadeMs": 500,
-      "gap": 14,
-      "rules": "1",
-      "font": "\"Barlow Condensed\", Arial, sans-serif",
-      "fontUrl": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap"
     },
     {
       "key": "helldivers2",
