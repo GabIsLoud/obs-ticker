@@ -47,6 +47,22 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=VT323&display=swap"
     },
     {
+      "key": "residentevil3nemesis",
+      "label": "Resident Evil 3: Nemesis",
+      "src": "residentevil3nemesismessages.txt",
+      "bg": "linear-gradient(90deg,rgba(5,11,9,0.98),rgba(48,8,10,0.96),rgba(8,8,13,0.98))",
+      "fg": "#D7E8C2",
+      "size": 30,
+      "speed": 150,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 500,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Share Tech Mono\", Consolas, monospace",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+    },
+    {
       "key": "mariokartworld",
       "label": "Mario Kart World",
       "src": "messagesMarioKartWorld.txt",
