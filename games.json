@@ -15,6 +15,22 @@
       "rules": "1"
     },
     {
+      "key": "ultrakill",
+      "label": "ULTRAKILL",
+      "src": "messagesUltrakill.txt",
+      "bg": "linear-gradient(90deg,rgba(4,6,8,0.98),rgba(86,6,12,0.97),rgba(5,18,28,0.98))",
+      "fg": "#7DF9FF",
+      "size": 30,
+      "speed": 168,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 430,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Oxanium\", \"Share Tech Mono\", Consolas, monospace",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Oxanium:wght@700&display=swap"
+    },
+    {
       "key": "hades",
       "label": "Hades",
       "src": "messagesHades.txt",
