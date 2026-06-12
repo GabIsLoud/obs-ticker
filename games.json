@@ -47,23 +47,7 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap"
     },
     {
-      "key": "fnaf1",
-      "label": "Five Nights at Freddy's",
-      "src": "messagesFnaf1.txt",
-      "bg": "linear-gradient(90deg,rgba(35,18,14,0.97),rgba(7,7,7,0.98))",
-      "fg": "#F4D8A8",
-      "size": 30,
-      "speed": 155,
-      "logo": "justG.png",
-      "collapse": 510000,
-      "fadeMs": 500,
-      "gap": 14,
-      "rules": "1",
-      "font": "\"VT323\", Consolas, monospace",
-      "fontUrl": "https://fonts.googleapis.com/css2?family=VT323&display=swap"
-    },
-    {
-      "key": "residentevil3nemesis",
+      "key": "residentevil3",
       "label": "Resident Evil 3: Nemesis",
       "src": "residentevil3messages.txt",
       "bg": "linear-gradient(90deg,rgba(5,11,9,0.98),rgba(48,8,10,0.96),rgba(8,8,13,0.98))",
