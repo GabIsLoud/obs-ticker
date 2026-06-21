@@ -15,6 +15,22 @@
       "rules": "1"
     },
     {
+      "key": "mecchachameleon",
+      "label": "Meccha Chameleon",
+      "src": "messagesMecchaChameleon.txt",
+      "bg": "linear-gradient(90deg, rgba(255,80,145,0.96), rgba(255,176,59,0.96), rgba(67,205,128,0.96), rgba(72,149,255,0.96), rgba(164,98,255,0.96))",
+      "fg": "#FFFDF7",
+      "size": 30,
+      "speed": 160,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 460,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Baloo 2\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap"
+    },
+    {
       "key": "ultrakill",
       "label": "ULTRAKILL",
       "src": "messagesUltrakill.txt",
