@@ -63,6 +63,22 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap"
     },
     {
+      "key": "re4original",
+      "label": "Resident Evil 4 (Original)",
+      "src": "messagesRE4OG.txt",
+      "bg": "linear-gradient(90deg,rgba(27,20,14,0.98),rgba(63,41,24,0.96),rgba(18,17,15,0.98))",
+      "fg": "#E8D7B8",
+      "size": 30,
+      "speed": 152,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 500,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Share Tech Mono\", Consolas, monospace",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+    },
+    {
       "key": "residentevil3",
       "label": "Resident Evil 3: Nemesis",
       "src": "residentevil3messages.txt",
