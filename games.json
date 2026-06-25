@@ -79,6 +79,22 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
     },
     {
+      "key": "deltarunech5",
+      "label": "Deltarune Ch. 5",
+      "src": "messagesDeltaruneCh5.txt",
+      "bg": "linear-gradient(90deg,rgba(18,16,40,0.98),rgba(58,20,74,0.96),rgba(17,24,58,0.98))",
+      "fg": "#F8F6FF",
+      "size": 30,
+      "speed": 156,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 480,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Space Grotesk\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap"
+    },
+    {
       "key": "residentevil3",
       "label": "Resident Evil 3: Nemesis",
       "src": "residentevil3messages.txt",
