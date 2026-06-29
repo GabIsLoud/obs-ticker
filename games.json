@@ -15,6 +15,22 @@
       "rules": "1"
     },
     {
+      "key": "eldenring",
+      "label": "Elden Ring",
+      "src": "messagesEldenRing.txt",
+      "bg": "linear-gradient(90deg,rgba(30,36,22,0.98),rgba(68,59,30,0.96),rgba(18,22,18,0.98))",
+      "fg": "#E8DEB8",
+      "size": 30,
+      "speed": 154,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 490,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Cinzel\", Georgia, serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap"
+    },
+    {
       "key": "mecchachameleon",
       "label": "Meccha Chameleon",
       "src": "messagesMecchaChameleon.txt",
