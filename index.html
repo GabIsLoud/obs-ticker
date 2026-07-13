@@ -168,6 +168,7 @@
 
       let PRESETS = {};
       let PRESET_ORDER = [];
+      let VISIBLE_PRESET_ORDER = [];
 
       let allMessages = [];
       let messagePool = [];
@@ -190,6 +191,7 @@
 
           PRESETS = {};
           PRESET_ORDER = [];
+          VISIBLE_PRESET_ORDER = [];
 
           const games = Array.isArray(manifest.games) ? manifest.games : [];
           for (const item of games) {
@@ -197,6 +199,9 @@
             const key = normalizePresetKey(item.key);
             PRESETS[key] = item;
             PRESET_ORDER.push(key);
+            if (isPresetVisible(item.visible)) {
+              VISIBLE_PRESET_ORDER.push(key);
+            }
           }
 
           const presetFromQuery = PRESETS[selectedPresetKey] || null;
@@ -212,6 +217,7 @@
           console.error('Failed to load games manifest:', err);
           PRESETS = {};
           PRESET_ORDER = [];
+          VISIBLE_PRESET_ORDER = [];
           renderPresetPicker();
         }
       }
@@ -222,7 +228,16 @@
         presetPicker.innerHTML = '';
         applyPickerChrome();
 
-        PRESET_ORDER.forEach((key) => {
+        if (!VISIBLE_PRESET_ORDER.length) {
+          root.classList.add('isHidden');
+          root.setAttribute('aria-hidden', 'true');
+          return;
+        }
+
+        root.classList.remove('isHidden');
+        root.setAttribute('aria-hidden', 'false');
+
+        VISIBLE_PRESET_ORDER.forEach((key) => {
           const preset = PRESETS[key];
           const btn = document.createElement('button');
           btn.type = 'button';
@@ -523,6 +538,15 @@
 
       function normalizePresetKey(value) {
         return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      }
+
+      function isPresetVisible(value) {
+        if (typeof value === 'boolean') return value;
+        if (typeof value === 'number') return value !== 0;
+        const normalized = String(value ?? '').trim().toLowerCase();
+        if (!normalized) return true;
+        if (['0', 'false', 'no', 'off'].includes(normalized)) return false;
+        return true;
       }
 
       function lerp(a, b, t) {
