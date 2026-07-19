@@ -33,6 +33,22 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap"
     },
     {
+      "key": "palworld",
+      "label": "Palworld",
+      "src": "messagesPalworld.txt",
+      "bg": "linear-gradient(90deg,rgba(44,105,118,0.97),rgba(52,132,105,0.96),rgba(34,75,93,0.97))",
+      "fg": "#F3FFF2",
+      "size": 30,
+      "speed": 158,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 470,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Nunito Sans\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@800&display=swap"
+    },
+    {
       "key": "mecchachameleon",
       "label": "Meccha Chameleon",
       "src": "messagesMecchaChameleon.txt",
