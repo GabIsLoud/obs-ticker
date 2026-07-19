@@ -36,6 +36,7 @@
       "key": "palworld",
       "label": "Palworld",
       "src": "messagesPalworld.txt",
+      "visible": false,
       "bg": "linear-gradient(90deg,rgba(44,105,118,0.97),rgba(52,132,105,0.96),rgba(34,75,93,0.97))",
       "fg": "#F3FFF2",
       "size": 30,
