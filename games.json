@@ -16,6 +16,23 @@
       "rules": "1"
     },
     {
+      "key": "godofwarragnarok",
+      "label": "God of War Ragnarök",
+      "src": "messagesGodOfWarRagnarok.txt",
+      "visible": true,
+      "bg": "linear-gradient(90deg,rgba(19,36,46,0.98),rgba(45,72,78,0.96),rgba(19,25,31,0.98))",
+      "fg": "#E7F3F2",
+      "size": 30,
+      "speed": 154,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 490,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Cinzel\", Georgia, serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap"
+    },
+    {
       "key": "eldenring",
       "label": "Elden Ring",
       "src": "messagesEldenRing.txt",
@@ -257,7 +274,7 @@
       "key": "ff7rebirth",
       "label": "FF7 Rebirth",
       "src": "messagesFF7Rebirth.txt",
-      "visible": true,
+      "visible": false,
       "bg": "rgba(0,130,120,0.88)",
       "fg": "#EFFFFA",
       "size": 30,
