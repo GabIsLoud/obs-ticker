@@ -66,6 +66,23 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap"
     },
     {
+      "key": "marvelrivals",
+      "label": "Marvel Rivals",
+      "src": "messagesMarvelRivals.txt",
+      "visible": false;
+      "bg": "linear-gradient(90deg,rgba(34,48,118,0.98),rgba(107,38,145,0.96),rgba(178,46,92,0.96))",
+      "fg": "#FFF8FF",
+      "size": 30,
+      "speed": 158,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 460,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Rajdhani\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap"
+    },
+    {
       "key": "palworld",
       "label": "Palworld",
       "src": "messagesPalworld.txt",
