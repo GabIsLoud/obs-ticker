@@ -19,7 +19,7 @@
       "key": "metroiddread",
       "label": "Metroid Dread",
       "src": "messagesMetroidDread.txt",
-      "visible":false,
+      "visible":true,
       "bg": "linear-gradient(90deg,rgba(13,23,34,0.98),rgba(34,72,83,0.97),rgba(14,42,50,0.98))",
       "fg": "#D9FFF7",
       "size": 30,
