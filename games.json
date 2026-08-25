@@ -16,6 +16,23 @@
       "rules": "1"
     },
     {
+      "key": "metroiddread",
+      "label": "Metroid Dread",
+      "src": "messagesMetroidDread.txt",
+      "visible":false,
+      "bg": "linear-gradient(90deg,rgba(13,23,34,0.98),rgba(34,72,83,0.97),rgba(14,42,50,0.98))",
+      "fg": "#D9FFF7",
+      "size": 30,
+      "speed": 156,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 480,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Rajdhani\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap"
+    },
+    {
       "key": "godofwarragnarok",
       "label": "God of War Ragnarök",
       "src": "messagesGodOfWarRagnarok.txt",
