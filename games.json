@@ -33,6 +33,23 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap"
     },
     {
+      "key": "hitmanwoa",
+      "label": "HITMAN: World of Assassination",
+      "src": "messagesHitmanWOA.txt",
+      "visible": false,
+      "bg": "linear-gradient(90deg,rgba(18,20,23,0.99),rgba(55,57,60,0.97),rgba(20,23,25,0.99))",
+      "fg": "#F2F2F2",
+      "size": 30,
+      "speed": 154,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 480,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Barlow Condensed\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap"
+    },
+    {
       "key": "godofwarragnarok",
       "label": "God of War Ragnarök",
       "src": "messagesGodOfWarRagnarok.txt",
