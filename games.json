@@ -16,6 +16,23 @@
       "rules": "1"
     },
     {
+      "key": "1000special",
+      "label": "1000 Sub Special",
+      "src": "messages1000Special.txt",
+      "visible": false,
+      "bg": "linear-gradient(90deg,rgba(255,73,167,0.97),rgba(156,82,255,0.97),rgba(54,184,255,0.97),rgba(72,220,180,0.97),rgba(255,205,68,0.97),rgba(255,95,144,0.97))",
+      "fg": "#FFFFFF",
+      "size": 30,
+      "speed": 160,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 450,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Fredoka\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap"
+    },
+    {
       "key": "metroiddread",
       "label": "Metroid Dread",
       "src": "messagesMetroidDread.txt",
