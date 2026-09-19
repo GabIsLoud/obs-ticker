@@ -50,6 +50,23 @@
       "fontUrl": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap"
     },
     {
+      "key": "residentevil5",
+      "label": "Resident Evil 5",
+      "src": "messagesRE5.txt",
+      "visible": true,
+      "bg": "linear-gradient(90deg,rgba(32,38,28,0.98),rgba(82,70,38,0.96),rgba(25,29,24,0.98))",
+      "fg": "#E5E1C1",
+      "size": 30,
+      "speed": 152,
+      "logo": "justG.png",
+      "collapse": 510000,
+      "fadeMs": 500,
+      "gap": 14,
+      "rules": "1",
+      "font": "\"Barlow Condensed\", Arial, sans-serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap"
+    },
+    {
       "key": "hitmanwoa",
       "label": "HITMAN: World of Assassination",
       "src": "messagesHitmanWOA.txt",
