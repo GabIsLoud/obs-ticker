@@ -16,21 +16,21 @@
       "rules": "1"
     },
     {
-      "key": "1000special",
-      "label": "1000 Sub Special",
-      "src": "messages1000Special.txt",
-      "visible": false,
-      "bg": "linear-gradient(90deg,rgba(255,73,167,0.97),rgba(156,82,255,0.97),rgba(54,184,255,0.97),rgba(72,220,180,0.97),rgba(255,205,68,0.97),rgba(255,95,144,0.97))",
-      "fg": "#FFFFFF",
+      "key": "witcher3",
+      "label": "The Witcher 3",
+      "src": "messagesWitcher3.txt",
+      "visible": true,
+      "bg": "linear-gradient(90deg,rgba(24,29,24,0.98),rgba(67,54,37,0.97),rgba(31,36,30,0.98))",
+      "fg": "#E8DFC8",
       "size": 30,
-      "speed": 160,
+      "speed": 154,
       "logo": "justG.png",
       "collapse": 510000,
-      "fadeMs": 450,
+      "fadeMs": 490,
       "gap": 14,
       "rules": "1",
-      "font": "\"Fredoka\", Arial, sans-serif",
-      "fontUrl": "https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap"
+      "font": "\"Cinzel\", Georgia, serif",
+      "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap"
     },
     {
       "key": "metroiddread",
