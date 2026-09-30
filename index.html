@@ -8,6 +8,7 @@
     :root {
       --bg: rgba(0,0,0,0.6);
       --fg: #ffffff;
+      --border: var(--fg);
       --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --size: 48;
       --speed: 160;
@@ -144,7 +145,7 @@
       right: 0;
       height: 2px;
       opacity: 0.5;
-      background: linear-gradient(90deg, transparent, var(--fg), transparent);
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
     }
 
     #tickerRoot.rules::before { top: 0; }
@@ -287,6 +288,7 @@
 
         setCssVar('--bg', cfg.bg);
         setCssVar('--fg', cfg.fg);
+        setCssVar('--border', cfg.borderColor || cfg.fg);
         setCssVar('--font', cfg.font);
         setCssVar('--size', cfg.size);
         setCssVar('--speed', cfg.speed);
@@ -346,6 +348,7 @@
         return {
           bg: merged.bg ?? getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
           fg: merged.fg ?? getComputedStyle(document.documentElement).getPropertyValue('--fg').trim(),
+          borderColor: merged.borderColor || undefined,
           font: merged.font ?? getComputedStyle(document.documentElement).getPropertyValue('--font').trim(),
           size: clampNum(qp.get('size') ?? merged.size, 12, 200, +getCssVar('--size')),
           speed: clampNum(qp.get('speed') ?? merged.speed, 20, 2000, +getCssVar('--speed')),

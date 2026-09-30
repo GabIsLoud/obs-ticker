@@ -1,0 +1,339 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "name": "Game Notes",
+      "rows": [
+        {
+          "prompt": "What do you always end up doing in this game even when it was not the plan?"
+        },
+        {
+          "prompt": "What mistake do you personally make repeatedly in this game?"
+        },
+        {
+          "prompt": "What mechanic should chat remind you to use?"
+        },
+        {
+          "prompt": "What resource, ability, item, or system do you forget exists?"
+        },
+        {
+          "prompt": "What loot, collectible, or side objective do you refuse to leave behind?"
+        },
+        {
+          "prompt": "What is the actual progression goal of this playthrough?"
+        },
+        {
+          "prompt": "What is especially satisfying when you pull it off?"
+        },
+        {
+          "prompt": "What should chat call out if you walk past it?"
+        },
+        {
+          "prompt": "What does a genuinely good run, fight, match, or mission look like?"
+        },
+        {
+          "prompt": "What part of this game makes you stop and overthink things?"
+        },
+        {
+          "prompt": "What should you remember to save, repair, reload, restock, or equip?"
+        },
+        {
+          "prompt": "What enemy, boss, NPC, or mechanic has become a recurring problem?"
+        },
+        {
+          "prompt": "What kind of helpful backseating is useful in THIS game?"
+        },
+        {
+          "prompt": "What one detail would immediately explain this run to a new viewer?"
+        }
+      ]
+    },
+    {
+      "name": "Chat & Engagement",
+      "rows": [
+        {
+          "prompt": "What can chat productively call out while you play?"
+        },
+        {
+          "prompt": "What kind of backseating actually helps?"
+        },
+        {
+          "prompt": "What choice could chat weigh in on without taking over the run?"
+        },
+        {
+          "prompt": "What recurring goal should a new viewer know about?"
+        },
+        {
+          "prompt": "What accomplishment from this run is worth mentioning?"
+        },
+        {
+          "prompt": "What should chat celebrate when you pull it off?"
+        },
+        {
+          "prompt": "What recurring mistake should chat hold you accountable for?"
+        },
+        {
+          "prompt": "What spoiler boundary applies here?"
+        },
+        {
+          "prompt": "What could lurkers react to without needing much context?"
+        },
+        {
+          "prompt": "What game-specific thing should viewers remind you about?"
+        }
+      ]
+    },
+    {
+      "name": "Stream In-Jokes",
+      "rows": [
+        {
+          "prompt": "Who are you lusting after in this game?"
+        },
+        {
+          "prompt": "What would send you directly to horny jail?"
+        },
+        {
+          "prompt": "Who gets the strongest 'hear me out' treatment?"
+        },
+        {
+          "prompt": "What has chat repeatedly roasted you for?"
+        },
+        {
+          "prompt": "What mechanic makes you much more confident than you deserve to be?"
+        },
+        {
+          "prompt": "What repeated failure has turned into a bit?"
+        },
+        {
+          "prompt": "Has chat given a character, enemy, item, or location a stupid nickname?"
+        },
+        {
+          "prompt": "What is the most Gabisness way you keep solving problems?"
+        },
+        {
+          "prompt": "Write a game-specific adult/PPV plug that could ONLY belong to this game.",
+          "copy": "onlyfans.com/gabisnessppv"
+        },
+        {
+          "prompt": "What unique joke or bit has developed during this specific playthrough?"
+        }
+      ]
+    },
+    {
+      "name": "Site Plugs",
+      "rows": [
+        {
+          "prompt": "Rules #1 — Make chat conduct sound like it belongs to this game's world.",
+          "copy": "gabisness.com/rules"
+        },
+        {
+          "prompt": "Rules #2 — Give the rules a different game-specific angle.",
+          "copy": "gabisness.com/rules"
+        },
+        {
+          "prompt": "Games #1 — Connect the recent-games list to this game's missions, worlds, quests, etc.",
+          "copy": "gabisness.com/games"
+        },
+        {
+          "prompt": "Games #2 — Why might someone watching THIS game care about the rest of the rotation?",
+          "copy": "gabisness.com/games"
+        },
+        {
+          "prompt": "Schedule #1 — Present the next stream in language appropriate to this game.",
+          "copy": "gabisness.com/schedule"
+        },
+        {
+          "prompt": "Schedule #2 — Another schedule plug with a different idea.",
+          "copy": "gabisness.com/schedule"
+        },
+        {
+          "prompt": "Setup #1 — Connect the PC setup to something visual or mechanical in the game.",
+          "copy": "gabisness.com/setup"
+        },
+        {
+          "prompt": "Setup #2 — Another setup plug without simply saying 'my setup is here.'",
+          "copy": "gabisness.com/setup"
+        },
+        {
+          "prompt": "Playlists #1 — Connect playlists to downtime, travel, grinding, menus, ambience, etc.",
+          "copy": "gabisness.com/playlists"
+        },
+        {
+          "prompt": "Playlists #2 — A different music-related situation from the game.",
+          "copy": "gabisness.com/playlists"
+        },
+        {
+          "prompt": "Donate #1 — Tie support to the current run, project, challenge, or stream.",
+          "copy": "gabisness.com/donate"
+        },
+        {
+          "prompt": "Donate #2 — A second support line that is not a paraphrase.",
+          "copy": "gabisness.com/donate"
+        },
+        {
+          "prompt": "Suggest #1 — Connect future game suggestions to whatever you're currently doing.",
+          "copy": "gabisness.com/suggest"
+        },
+        {
+          "prompt": "Suggest #2 — Give viewers another reason to suggest something.",
+          "copy": "gabisness.com/suggest"
+        },
+        {
+          "prompt": "FAQ #1 — Plug the FAQ in a way that fits this game or this kind of viewer question.",
+          "copy": "gabisness.com/faq"
+        },
+        {
+          "prompt": "FAQ #2 — Another FAQ line with a different reason to use it.",
+          "copy": "gabisness.com/faq"
+        },
+        {
+          "prompt": "Contact #1 — Plug the contact page for links, PO box, or outreach in a game-relevant way.",
+          "copy": "gabisness.com/contact"
+        },
+        {
+          "prompt": "Contact #2 — Another contact-page line with a different angle.",
+          "copy": "gabisness.com/contact"
+        },
+        {
+          "prompt": "Store #1 — Point viewers to the store without focusing on one specific product category.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Store #2 — Another general store plug with a different game-specific angle.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "PPV #1 — Game-specific edgy/adult plug.",
+          "copy": "onlyfans.com/gabisnessppv"
+        },
+        {
+          "prompt": "PPV #2 — Completely different game-specific PPV reference.",
+          "copy": "onlyfans.com/gabisnessppv"
+        }
+      ]
+    },
+    {
+      "name": "Merch Plugs",
+      "rows": [
+        {
+          "prompt": "Shirts #1 — Plug a shirt or tee in a way that fits the current game's imagery, joke, or vibe.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Shirts #2 — A second shirt line that is not a rewording of the first.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Pants #1 — Find a game-relevant reason to mention pants / bottoms.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Pants #2 — A second pants line with a different angle.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Hats #1 — Connect a hat plug to a character, outfit, armor, disguise, or style idea from the game.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Hats #2 — A different hat-related line.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Clothing #1 — General clothing plug tied to the current game's style or stream context.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Clothing #2 — A different general clothing line.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Eddy's Sinister Creations #1 — Plug Eddy/Sinister Sigster's handmade art in a way that fits this game.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Eddy's Sinister Creations #2 — A second handmade-art line with a different connection.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Store #1 — General merch/store plug that fits the current stream.",
+          "copy": "gabisness.com/store"
+        },
+        {
+          "prompt": "Store #2 — Another store plug with a genuinely different angle.",
+          "copy": "gabisness.com/store"
+        }
+      ]
+    },
+    {
+      "name": "Reminders & CTAs",
+      "rows": [
+        {
+          "prompt": "Write a hydration reminder using an actual mechanic, character, item, or situation from this game."
+        },
+        {
+          "prompt": "Write a posture/stretch reminder relevant to this game."
+        },
+        {
+          "prompt": "What long-session reminder would genuinely help you?"
+        },
+        {
+          "prompt": "What should chat remind you to check before a boss, match, mission, or run?"
+        },
+        {
+          "prompt": "Write a subscribe CTA that has actual stream context."
+        },
+        {
+          "prompt": "Write a membership CTA that fits the Gab-lings/community vibe."
+        },
+        {
+          "prompt": "What should chat say when you're getting tilted, greedy, distracted, or tunnel-visioned?"
+        },
+        {
+          "prompt": "What food/break/rest reminder fits this type of stream?"
+        }
+      ]
+    },
+    {
+      "name": "Oddballs",
+      "rows": [
+        {
+          "prompt": "Extra line 1"
+        },
+        {
+          "prompt": "Extra line 2"
+        },
+        {
+          "prompt": "Extra line 3"
+        },
+        {
+          "prompt": "Extra line 4"
+        },
+        {
+          "prompt": "Extra line 5"
+        },
+        {
+          "prompt": "Extra line 6"
+        },
+        {
+          "prompt": "Extra line 7"
+        },
+        {
+          "prompt": "Extra line 8"
+        },
+        {
+          "prompt": "Extra line 9"
+        },
+        {
+          "prompt": "Extra line 10"
+        },
+        {
+          "prompt": "Extra line 11"
+        },
+        {
+          "prompt": "Extra line 12"
+        }
+      ]
+    }
+  ]
+}
