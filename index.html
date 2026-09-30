@@ -16,7 +16,7 @@
       --gapX: 12;
       --collapseMs: 0;
       --fadeMs: 320;
-      --logoUrl: "logo.png";
+      --logoUrl: "justG.png";
       --messagesUrl: "messages.txt";
       --shadow: 0 1px 2px rgba(0,0,0,0.35);
     }
@@ -175,6 +175,8 @@
       let lastMessage = '';
 
       let raf = null;
+      let collapseTimer = null;
+      let session = 0;
       let animating = false;
       let currentCfg = null;
       let loopStarted = false;
@@ -256,7 +258,7 @@
         selectedPresetKey = key;
         presetPicker.hidden = true;
         track.hidden = false;
-        initTicker(buildConfig(preset), { resetAnimationState: true });
+        initTicker(buildConfig(preset));
       }
 
       function applyPickerChrome() {
@@ -271,17 +273,26 @@
         setCssVar('--gapX', clampNum(qp.get('gap'), 0, 200, 14));
       }
 
-      function initTicker(cfg, opts = {}) {
-        if (opts.resetAnimationState) {
-          if (raf) cancelAnimationFrame(raf);
-          raf = null;
-          animating = false;
-          loopStarted = false;
-          allMessages = [];
-          messagePool = [];
-          lastMessage = '';
-          track.innerHTML = '';
-        }
+      function resetTicker() {
+        session++;
+        if (raf !== null) cancelAnimationFrame(raf);
+        if (collapseTimer !== null) clearTimeout(collapseTimer);
+        raf = null;
+        collapseTimer = null;
+        animating = false;
+        loopStarted = false;
+        currentCfg = null;
+        allMessages = [];
+        messagePool = [];
+        lastMessage = '';
+        track.innerHTML = '';
+      }
+
+      function initTicker(cfg) {
+        resetTicker();
+        const activeSession = session;
+        root.classList.remove('isHidden');
+        root.setAttribute('aria-hidden', 'false');
 
         currentCfg = cfg;
 
@@ -301,6 +312,7 @@
 
         fetchMessages(cfg.messagesUrl)
           .then(loaded => {
+            if (activeSession !== session) return;
             allMessages = normalizeMessages(loaded);
 
             if (!allMessages.length) {
@@ -319,6 +331,7 @@
             }
           })
           .catch(err => {
+            if (activeSession !== session) return;
             console.error('Failed to load messages:', err);
             allMessages = ['(ticker) Unable to load messages file.'];
             refillMessagePool();
@@ -436,17 +449,22 @@
       }
 
       function nextSlide() {
-        if (animating || !currentCfg) return;
+        if (animating || collapseTimer !== null || !currentCfg) return;
 
         const msg = getNextMessage();
         if (!msg) return;
 
+        const activeSession = session;
         runOnce(msg).then(() => {
-          requestAnimationFrame(() => {
+          if (activeSession !== session) return;
+          raf = requestAnimationFrame(() => {
+            if (activeSession !== session) return;
             if (currentCfg.collapseMs > 0) {
               root.classList.add('isHidden');
               root.setAttribute('aria-hidden', 'true');
-              setTimeout(() => {
+              collapseTimer = setTimeout(() => {
+                collapseTimer = null;
+                if (activeSession !== session) return;
                 root.classList.remove('isHidden');
                 root.setAttribute('aria-hidden', 'false');
                 nextSlide();
@@ -459,6 +477,8 @@
       }
 
       function runOnce(text) {
+        const activeSession = session;
+        animating = true;
         return new Promise(resolve => {
           track.innerHTML = '';
 
@@ -493,7 +513,8 @@
 
           track.appendChild(slide);
 
-          requestAnimationFrame(() => {
+          raf = requestAnimationFrame(() => {
+            if (activeSession !== session) return;
             const trackRect = track.getBoundingClientRect();
             const slideRect = slide.getBoundingClientRect();
             const contentWidth = slideRect.width;
@@ -507,6 +528,7 @@
             animating = true;
 
             function step(ts) {
+              if (activeSession !== session) return;
               if (!start) start = ts;
               const elapsed = ts - start;
               const progress = Math.min(elapsed / durationMs, 1);
@@ -554,6 +576,7 @@
       }
 
       function clampNum(v, min, max, fallback) {
+        if (v == null || String(v).trim() === '') return fallback;
         const n = Number(v);
         if (!isFinite(n)) return fallback;
         return Math.max(min, Math.min(max, n));
@@ -576,8 +599,10 @@
         nextSlide = function patchedNext() {
           shown++;
           if (shown % reloadEvery === 0 && currentCfg) {
+            const activeSession = session;
             fetchMessages(currentCfg.messagesUrl)
               .then(loaded => {
+                if (activeSession !== session) return;
                 allMessages = normalizeMessages(loaded);
                 refillMessagePool();
               })
@@ -606,14 +631,7 @@
           if (!animating) nextSlide();
         },
         showPicker() {
-          if (raf) cancelAnimationFrame(raf);
-          raf = null;
-          animating = false;
-          loopStarted = false;
-          allMessages = [];
-          messagePool = [];
-          lastMessage = '';
-          track.innerHTML = '';
+          resetTicker();
           track.hidden = true;
           presetPicker.hidden = false;
           renderPresetPicker();
